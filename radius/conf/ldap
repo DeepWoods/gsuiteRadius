@@ -1,0 +1,85 @@
+ldap {
+        server = 'ldaps://ldap.google.com:636'
+        identity = <GSuiteCreds>                     # <-
+        password = <GSuiteCreds>                     # <-
+        base_dn = 'DC=acme,DC=com'                   # <-
+        sasl {
+        }
+        update {
+                control:Password-With-Header    += 'userPassword'
+                control:                        += 'radiusControlAttribute'
+                request:                        += 'radiusRequestAttribute'
+                reply:                          += 'radiusReplyAttribute'
+                reply:Class := 'employeeType'
+        }
+        user {
+                base_dn = "ou=Users,dc=acme,dc=com"           # <-
+                filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
+                sasl {
+                }
+        }
+        group {
+                base_dn = "ou=Groups,dc=acme,dc=com"          # <-
+                filter = '(objectClass=posixGroup)'
+                name_attribute = cn
+                membership_attribute = 'memberOf'
+                membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
+                cacheable_name = 'yes'
+                cacheable_dn = 'no'
+        }
+        profile {
+        }
+        accounting {
+                reference = "%{tolower:type.%{Acct-Status-Type}}"
+                type {
+                        start {
+                                update {
+                                        description := "Online at %S"
+                                }
+                        }
+                        interim-update {
+                                update {
+                                        description := "Last seen at %S"
+                                }
+                        }
+                        stop {
+                                update {
+                                        description := "Offline at %S"
+                                }
+                        }
+                }
+        }
+        post-auth {
+                update {
+                        description := "Authenticated at %S"
+                }
+        }
+        options {
+                chase_referrals = no
+                rebind = yes
+                res_timeout = 10
+                srv_timelimit = 3
+                net_timeout = 1
+                idle = 60
+                probes = 3
+                interval = 3
+                ldap_debug = 0x0028
+        }
+        tls {
+                start_tls = no
+                certificate_file = /etc/freeradius/3.0/certs/Google_sLDAP.crt           # <-
+                private_key_file = /etc/freeradius/3.0/certs/Google_sLDAP.key           # <-
+                random_file = /dev/urandom
+                require_cert = 'allow'
+        }
+        pool {
+                start = ${thread[pool].start_servers}
+                min = ${thread[pool].min_spare_servers}
+                max = ${thread[pool].max_servers}
+                spare = ${thread[pool].max_spare_servers}
+                uses = 0
+                retry_delay = 30
+                lifetime = 0
+                idle_timeout = 60
+        }
+}

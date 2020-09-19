@@ -1,48 +1,3 @@
-# gsuiteRadius - GSuite Radius Auth in Docker
-
-## About
-
-* Docker compose build for freeradius, daloradius, apache2, php, 802.1x auth(EAP-TTLS) via GSuite sLDAP, mac-auth based on latest Ubuntu LTS.
-* Includes separate MariaDB-Server 10.3 build with radius schema
-* access via `your-ip-or-url/daloradius`
-* User: `administrator` Password: `radius`
-
-## Variables
-
-* .env file for changing most configuration options
-
-### RADIUS_REALM
-standard value: *acme.com*
-### RADIUS_SECRET
-standard value: *testing123*
-
-### MYSQL_USER
-standard value: *raduser*
-### MYSQL_PASSWORD
-standard value: *radpass*
-### MYSQL_HOST
-standard value: *acme_mysql*
-### MYSQL_PORT
-standard value: *3306*
-### MYSQL_DATABASE
-standard value: *radius*
-### MYSQL_ROOT_PASSWORD
-standard value: *t00rPaSs*
-### TZ
-standard value: *America/Chicago* - [see List of tz time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-
-* ./radius/conf directory contains configuration files with required edits.  Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
-
----
-### Certificates
-Generic certificates provided for configuration reference but not guaranteed.  A new self-signed certificate authority and server certificates
-can be created by following the instructions in the /etc/freeradius/3.0/certs/ directory of the radius container.
-
----
-## Docker-compose example
-
-
-```yaml
 version: '3'
 
 services:
@@ -116,4 +71,3 @@ networks:
       driver: default
       config:
         - subnet: ${VLAN_SUBNET}
-```

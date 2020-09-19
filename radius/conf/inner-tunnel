@@ -1,0 +1,85 @@
+server inner-tunnel {
+listen {
+       ipaddr = 127.0.0.1
+       port = 18120
+       type = auth
+}
+authorize {
+        filter_username
+        suffix
+        update control {
+                Cache-Status-Only = 'yes'
+        }
+        cache
+        eap {
+                ok = return
+        }
+        if (!control:Auth-Type) {
+                ldap
+                if ((ok || updated) && User-Password) {
+                        update {
+                                control:Auth-Type := LDAP
+                        }
+                }
+        }
+        update control {
+                Cache-Status-Only := 'no'
+        }
+        cache
+        expiration
+        logintime
+        pap
+}
+authenticate {
+        Auth-Type PAP {
+                pap
+        }
+        Auth-Type MS-CHAP {
+                mschap
+        }
+        Auth-Type LDAP {
+                ldap
+        }
+        eap
+}
+session {
+        sql
+}
+post-auth {
+        update reply {
+                User-Name := &request:User-Name
+        }
+#        update outer.session-state {
+#                User-Name := &User-Name
+#        }
+        sql
+        set_group_vlan
+        if (1) {
+                update reply {
+#                        User-Name !* ANY
+                        Message-Authenticator !* ANY
+                        EAP-Message !* ANY
+                        Proxy-State !* ANY
+                        MS-MPPE-Encryption-Types !* ANY
+                        MS-MPPE-Encryption-Policy !* ANY
+                        MS-MPPE-Send-Key !* ANY
+                        MS-MPPE-Recv-Key !* ANY
+                }
+                update {
+                        &outer.session-state: += &reply:
+                }
+        }
+        Post-Auth-Type REJECT {
+                sql
+                attr_filter.access_reject
+                update outer.session-state {
+                        &Module-Failure-Message := &request:Module-Failure-Message
+                }
+        }
+}
+pre-proxy {
+}
+post-proxy {
+        eap
+}
+} # inner-tunnel server block

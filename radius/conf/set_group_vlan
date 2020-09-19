@@ -1,0 +1,30 @@
+set_group_vlan {
+        foreach control:Ldap-Group {
+                update {
+                        reply:Tunnel-Type := 'VLAN'
+                        reply:Tunnel-Medium-Type := 'IEEE-802'
+                }
+                switch "%{Foreach-Variable-0}" {
+                        case 'technology' {                                           # <-
+                                update {
+                                        reply:Tunnel-Private-Group-Id := '150'        # <-
+                                        reply:Filter-Id := 'technology'
+                                }
+                                break
+                        }
+                        case 'staff' {                                                # <-
+                                update {
+                                        reply:Tunnel-Private-Group-Id := '70'         # <-
+                                        reply:Filter-Id := 'staff'
+                                }
+                                break
+                        }
+                        case {
+                                update {
+                                        reply:Tunnel-Private-Group-Id := '80'         # <-
+                                        reply:Filter-Id := 'student'
+                                }
+                        }
+                }
+        }
+}

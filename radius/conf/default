@@ -1,0 +1,96 @@
+server default {
+listen {
+        type = auth
+        ipaddr = *
+        port = 0
+        limit {
+              max_connections = 128
+              lifetime = 0
+              idle_timeout = 30
+        }
+}
+listen {
+        ipaddr = *
+        port = 0
+        type = acct
+        limit {
+              max_connections = 128
+              lifetime = 0
+              idle_timeout = 30
+        }
+}
+authorize {
+#       filter_username
+        preprocess
+        suffix
+	rewrite_calling_station_id
+	rewrite_called_station_id
+        if (!EAP-Message) {
+		sql
+                if (!(ok || updated)) {
+                        reject
+                }
+                else {
+                        # accept mac-auth 
+                        update control {
+                                Auth-Type := Accept
+                        }
+                }
+        }
+
+        else {
+                eap {
+                        ok = return
+                        updated = return
+                }
+        }
+
+
+        expiration
+        logintime
+        # radius user limits
+#        noresetcounter
+#        dailycounter
+#        monthlycounter
+#        expire_on_login
+}
+authenticate {
+        eap
+}
+preacct {
+#       preprocess
+        acct_unique
+        suffix
+}
+accounting {
+        detail
+        sql
+#	perl
+        exec
+        attr_filter.accounting_response
+}
+session {
+        sql
+}
+post-auth {
+        update {
+                &reply: += &session-state:
+        }
+        exec
+        remove_reply_message_if_eap
+        sql
+        Post-Auth-Type REJECT {
+                sql
+                attr_filter.access_reject
+                eap
+                remove_reply_message_if_eap
+        }
+        Post-Auth-Type Challenge {
+        }
+}
+pre-proxy {
+}
+post-proxy {
+        eap
+}
+}
