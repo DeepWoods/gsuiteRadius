@@ -11,11 +11,13 @@
 
 * .env file for changing most configuration options
 
+* ./radius/conf directory contains configuration files with required edits.  Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
+
+
 ### RADIUS_REALM
 standard value: *acme.com*
 ### RADIUS_SECRET
 standard value: *testing123*
-
 ### MYSQL_USER
 standard value: *raduser*
 ### MYSQL_PASSWORD
@@ -31,7 +33,6 @@ standard value: *t00rPaSs*
 ### TZ
 standard value: *America/Chicago* - [see List of tz time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
-* ./radius/conf directory contains configuration files with required edits.  Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
 
 ---
 ### Certificates
