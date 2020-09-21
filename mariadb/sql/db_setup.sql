@@ -10,19 +10,19 @@
 #
 #  Create default administrator for RADIUS
 #
-CREATE USER 'radius'@'%' IDENTIFIED BY 'MYSQL_PASSWORD';;
-GRANT ALL ON radius.* TO 'radius'@'%';
+CREATE USER 'MYSQL_USER'@'%' IDENTIFIED BY 'MYSQL_PASSWORD';;
+GRANT ALL ON MYSQL_DATABASE.* TO 'MYSQL_USER'@'%';
 
-#CREATE USER 'radius'@'RADIUS_IP' IDENTIFIED BY 'MYSQL_PASSWORD';
+#CREATE USER 'MYSQL_USER'@'RADIUS_IP' IDENTIFIED BY 'MYSQL_PASSWORD';
 
 # The server can read any table in SQL
-#GRANT SELECT ON radius.* TO 'radius'@'RADIUS_IP';
+#GRANT SELECT ON MYSQL_DATABASE.* TO 'MYSQL_USER'@'RADIUS_IP';
 
 # The server can write to the accounting and post-auth logging table.
 #
-#GRANT ALL on radius.radacct TO 'radius'@'RADIUS_IP';
-#GRANT ALL on radius.radpostauth TO 'radius'@'RADIUS_IP';
+#GRANT ALL on MYSQL_DATABASE.radacct TO 'MYSQL_USER'@'RADIUS_IP';
+#GRANT ALL on MYSQL_DATABASE.radpostauth TO 'MYSQL_USER'@'RADIUS_IP';
 
-# INSERT into radius.radcheck (username,attribute,op,value) values("test@acme.com", "Cleartext-Password", ":=", "test");
+# INSERT into MYSQL_DATABASE.radcheck (username,attribute,op,value) values("test@acme.com", "Cleartext-Password", ":=", "test");
 
 FLUSH PRIVILEGES;

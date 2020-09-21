@@ -48,6 +48,8 @@ services:
         - MYSQL_CONTAINER_GROUP=mysql
         - MYSQL_DATA_DIR=${MYSQL_DATA_DIR}
         - MYSQL_LOG_DIR=${MYSQL_LOG_DIR}
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         - RADIUS_IP=${RADIUS_IP}
     networks:

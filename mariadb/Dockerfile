@@ -8,6 +8,8 @@ ARG MYSQL_CONTAINER_USER
 ARG MYSQL_CONTAINER_GROUP
 ARG MYSQL_DATA_DIR
 ARG MYSQL_LOG_DIR
+ARG MYSQL_DATABASE 
+ARG MYSQL_USER 
 ARG MYSQL_PASSWORD 
 ARG RADIUS_IP
 ARG DB_IP
@@ -31,6 +33,8 @@ RUN mkdir -p ${MYSQL_LOG_DIR} && \
 	usermod -u 1000 ${MYSQL_CONTAINER_USER} && \
  	groupmod -g 1000 ${MYSQL_CONTAINER_GROUP} && \
 	chown ${MYSQL_CONTAINER_USER}:${MYSQL_CONTAINER_USER} -R ${MYSQL_DATA_DIR} ${MYSQL_LOG_DIR} /docker-entrypoint-initdb.d && \
+	sed -i -e 's@MYSQL_DATABASE@'${MYSQL_DATABASE}'@g' /docker-entrypoint-initdb.d/db_setup.sql && \
+	sed -i -e 's@MYSQL_USER@'${MYSQL_USER}'@g' /docker-entrypoint-initdb.d/db_setup.sql && \
 	sed -i -e 's@MYSQL_PASSWORD@'${MYSQL_PASSWORD}'@g' /docker-entrypoint-initdb.d/db_setup.sql && \
 	sed -i -e 's@RADIUS_IP@'${RADIUS_IP}'@g' /docker-entrypoint-initdb.d/db_setup.sql && \
 	chown ${MYSQL_CONTAINER_USER}:${MYSQL_CONTAINER_USER} -R /mysql-certs/

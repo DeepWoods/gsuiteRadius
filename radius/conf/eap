@@ -15,7 +15,7 @@ eap {
                 #private_key_password = Privat3paSs                    # <- 
                 private_key_file = ${certdir}/radius.acme.com.key      # <-
                 certificate_file = ${certdir}/radius.acme.com.crt      # <-
-                ca_file = ${cadir}/ca.crta                             # <-
+                ca_file = ${cadir}/ca.crt                              # <-
                 dh_file = ${certdir}/dh.pem                            # <-
                 ca_path = ${cadir}
                 cipher_list = "DEFAULT"
