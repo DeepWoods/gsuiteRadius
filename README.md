@@ -21,7 +21,7 @@ standard value: *testing123*
 ### MYSQL_USER
 standard value: *raduser*
 ### MYSQL_PASSWORD
-standard value: *radpass*
+standard value: *radPass*
 ### MYSQL_HOST
 standard value: *acme_mysql*
 ### MYSQL_PORT
@@ -94,6 +94,8 @@ services:
         - MYSQL_CONTAINER_GROUP=mysql
         - MYSQL_DATA_DIR=${MYSQL_DATA_DIR}
         - MYSQL_LOG_DIR=${MYSQL_LOG_DIR}
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         - RADIUS_IP=${RADIUS_IP}
     networks:
