@@ -11,33 +11,40 @@
 
 * .env file for changing most configuration options
 
-* ./radius/conf directory contains configuration files with required edits.  Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
+
+#### RADIUS_REALM
+default value: *acme.com*
+#### RADIUS_SECRET
+default value: *testing123*
+#### MYSQL_USER
+default value: *raduser*
+#### MYSQL_PASSWORD
+default value: *radPass*
+#### MYSQL_HOST
+default value: *acme_mysql*
+#### MYSQL_PORT
+default value: *3306*
+#### MYSQL_DATABASE
+default value: *radius*
+#### MYSQL_ROOT_PASSWORD
+default value: *t00rPaSs*
+#### TZ
+default value: *America/Chicago* - [see List of tz time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 
-### RADIUS_REALM
-standard value: *acme.com*
-### RADIUS_SECRET
-standard value: *testing123*
-### MYSQL_USER
-standard value: *raduser*
-### MYSQL_PASSWORD
-standard value: *radPass*
-### MYSQL_HOST
-standard value: *acme_mysql*
-### MYSQL_PORT
-standard value: *3306*
-### MYSQL_DATABASE
-standard value: *radius*
-### MYSQL_ROOT_PASSWORD
-standard value: *t00rPaSs*
-### TZ
-standard value: *America/Chicago* - [see List of tz time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+## Configuration
 
+* ./radius/conf directory contains configuration files with required edits. Pay particular attention editing the ldap file.
+     Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
 
 ---
 ### Certificates
 Generic certificates provided for configuration reference but not guaranteed.  A new self-signed certificate authority and server certificates
 can be created by following the instructions in the /etc/freeradius/3.0/certs/ directory of the radius container.
+
+### Google LDAP Client
+Client certificate and client access credentials are required to allow Freeradius to query your GSuite directory.  Information and instructions can be found 
+here: https://support.google.com/a/topic/9048334?hl=en&ref_topic=7556686
 
 ---
 ## Docker-compose example
