@@ -34,14 +34,15 @@ default value: *America/Chicago* - [see List of tz time zones](https://en.wikipe
 
 ## Configuration
 
-* ./radius/conf directory contains configuration files with required edits. Pay particular attention editing the ldap file.
+* ./radius/conf directory contains configuration files with required edits. Pay particular attention editing the ldap file with your GSuite LDAP information.
      Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
-* How to use Let's Encrypt public CA certificate for Freeradius can be found here: https://framebyframewifi.net/2017/01/29/use-lets-encrypt-certificates-with-freeradius/
 
 ---
 ### Certificates
 Generic certificates provided for configuration reference but not guaranteed.  A new self-signed certificate authority and server certificates
 can be created by following the instructions in the /etc/freeradius/3.0/certs/ directory of the radius container.
+
+How to use Let's Encrypt public CA certificate for Freeradius can be found here: https://framebyframewifi.net/2017/01/29/use-lets-encrypt-certificates-with-freeradius/
 
 ### Google LDAP Client
 Client certificate and client access credentials are required to allow Freeradius to query your GSuite directory.  Information and instructions can be found 
