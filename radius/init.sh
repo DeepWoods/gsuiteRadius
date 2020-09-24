@@ -15,6 +15,17 @@ done
 #mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < /etc/freeradius/3.0/mods-config/sql/main/mysql/schema.sql 
 mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < /var/www/html/daloradius/contrib/db/mysql-daloradius.sql 
 
+# add ssh key and copy let's encrypt certs
+#eval "$(ssh-agent -s)"
+#if [ ! -d "/root/.ssh/" ]; then
+#    mkdir /root/.ssh
+#    ssh-add -k /run/secrets/id_rsa
+#    ssh-keyscan $CERT_HOST > /root/.ssh/known_hosts
+#    # scp lets encrypt keys from external nginx host
+#    scp root@$CERT_HOST:/etc/letsencrypt/live/$CERT_HOST/{privkey.pem,fullchain.pem} /etc/freeradius/3.0/certs/
+#    chmod +r /etc/freeradius/3.0/certs/*
+#fi
+
 # Enable SQL in freeradius
 sed -i 's|driver = "rlm_sql_null"|driver = "rlm_sql_mysql"|' /etc/freeradius/3.0/mods-available/sql 
 sed -i 's|dialect = "sqlite"|dialect = "mysql"|' /etc/freeradius/3.0/mods-available/sql

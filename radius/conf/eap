@@ -13,6 +13,8 @@ eap {
         }
         tls-config tls-common {
                 #private_key_password = Privat3paSs                    # <- 
+                #private_key_file = ${certdir}/privkey.pem             # <-
+                #certificate_file = ${certdir}/fullchain.pem           # <-
                 private_key_file = ${certdir}/radius.acme.com.key      # <-
                 certificate_file = ${certdir}/radius.acme.com.crt      # <-
                 ca_file = ${cadir}/ca.crt                              # <-

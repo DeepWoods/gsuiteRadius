@@ -67,8 +67,8 @@ ldap {
         }
         tls {
                 start_tls = no
-                certificate_file = /etc/freeradius/3.0/certs/Google_sLDAP.crt           # <-
-                private_key_file = /etc/freeradius/3.0/certs/Google_sLDAP.key           # <-
+                certificate_file = /run/secrets/Google_sLDAP.crt           # <-
+                private_key_file = /run/secrets/Google_sLDAP.key           # <-
                 random_file = /dev/urandom
                 require_cert = 'allow'
         }

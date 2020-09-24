@@ -1,4 +1,7 @@
 .DS_Store
+id_rsa*
+fullchain.pem
+privkey.pem
 Google*
 mariadb/data/
 mariadb/log/

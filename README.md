@@ -36,6 +36,7 @@ default value: *America/Chicago* - [see List of tz time zones](https://en.wikipe
 
 * ./radius/conf directory contains configuration files with required edits. Pay particular attention editing the ldap file.
      Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
+* How to use Let's Encrypt public CA certificate for Freeradius can be found here: https://framebyframewifi.net/2017/01/29/use-lets-encrypt-certificates-with-freeradius/
 
 ---
 ### Certificates
@@ -51,7 +52,7 @@ here: https://support.google.com/a/topic/9048334?hl=en&ref_topic=7556686
 
 
 ```yaml
-version: '3'
+version: '3.1'
 
 services:
   radius_server:
@@ -72,6 +73,11 @@ services:
         - RAD_USER=${RAD_USER}
         - RAD_GROUP=${RAD_GROUP}
         - RAD_LOG_DIR=${RAD_LOG_DIR}
+        - CERT_HOST=${CERT_HOST}
+    secrets:
+        - id_rsa
+        - Google_sLDAP.crt
+        - Google_sLDAP.key
     networks:
       rad_vlan:
         ipv4_address: ${RADIUS_IP}
@@ -126,4 +132,12 @@ networks:
       driver: default
       config:
         - subnet: ${VLAN_SUBNET}
+
+secrets:
+  id_rsa:
+    file: ./radius/id_rsa.txt
+  Google_sLDAP.crt:
+    file: ./radius/certs/Google_sLDAP.crt
+  Google_sLDAP.key:
+    file: ./radius/certs/Google_sLDAP.key
 ```

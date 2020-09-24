@@ -15,6 +15,7 @@ ARG MYSQL_DATABASE
 ARG RADIUS_SECRET
 ARG RADIUS_REALM
 ARG DB_IP
+ARG CERT_HOST
 
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.vendor="DeepWoods Creations"
@@ -35,6 +36,7 @@ ENV MYSQL_DATABASE=${MYSQL_DATABASE:-radius}
 ENV RADIUS_SECRET=${RADIUS_SECRET:-testing123}
 ENV RADIUS_REALM=${RADIUS_REALM:-acme.com}
 ENV DB_IP=${DB_IP:-192.168.5.6}
+ENV CERT_HOST=${CERT_HOST:-certs.acme.com}
 
 ENV TZ America/Chicago
 
@@ -51,6 +53,7 @@ RUN apt-get update \
                     freeradius-common \
                     freeradius-mysql \
                     freeradius-ldap \
+                    openssh-client \
                     net-tools \
                     php \
                     php-common \
