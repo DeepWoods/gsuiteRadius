@@ -18,9 +18,9 @@
 - The file ./radius/conf/set_group_vlan should be changed to assign VLAN ID's based on group membership lookup in GSuite.
 - NAS devices can be added in ./radius/conf/clients.conf or added via web interface(daloradius) to the SQL database.
 
-4. Build the images and run the services.
+4. Build the images and run the services:
 
-	docker-compose up
+        docker-compose up
 
 
 ## Variables
