@@ -26,6 +26,15 @@ mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < 
 #    chmod +r /etc/freeradius/3.0/certs/*
 #fi
 
+# schedule certificate sync in cron with rsync
+#if [ -f "/etc/cron.daily/sync-certs.sh" ]; then
+#	cat <<EOF > /etc/cron.daily/sync-certs.sh
+##!/bin/sh
+#rsync -e 'ssh -i /run/secrets/id_rsa' -Lz root@$CERT_HOST:/etc/letsencrypt/live/$CERT_HOST/{privkey.pem,fullchain.pem} /etc/freeradius/3.0/certs/
+#EOF
+#chmod +x /etc/cron.daily/sync-certs.sh
+#fi
+
 # Enable SQL in freeradius
 sed -i 's|driver = "rlm_sql_null"|driver = "rlm_sql_mysql"|' /etc/freeradius/3.0/mods-available/sql 
 sed -i 's|dialect = "sqlite"|dialect = "mysql"|' /etc/freeradius/3.0/mods-available/sql

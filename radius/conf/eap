@@ -12,13 +12,13 @@ eap {
                 auth_type = PAP
         }
         tls-config tls-common {
-                #private_key_password = Privat3paSs                    # <- 
-                #private_key_file = ${certdir}/privkey.pem             # <-
-                #certificate_file = ${certdir}/fullchain.pem           # <-
-                private_key_file = ${certdir}/radius.acme.com.key      # <-
-                certificate_file = ${certdir}/radius.acme.com.crt      # <-
-                ca_file = ${cadir}/ca.crt                              # <-
-                dh_file = ${certdir}/dh.pem                            # <-
+                #private_key_password = Privat3paSs                    # <- private key password if set
+                #private_key_file = ${certdir}/privkey.pem             # <- IF CONFIGURED!! Let's Encrypt certificate name
+                #certificate_file = ${certdir}/fullchain.pem           # <- IF CONFIGURED!! Let's Encrypt certificate name 
+                private_key_file = ${certdir}/radius.acme.com.key      # <- Generic private key file - For production, read http://deployingradius.com/documents/configuration/certificates.html
+                certificate_file = ${certdir}/radius.acme.com.crt      # <- Generic certificate file - For production, read http://deployingradius.com/documents/configuration/certificates.html
+                ca_file = ${cadir}/ca.crt                              # <- Generic Certificate Authority file - For production, read http://deployingradius.com/documents/configuration/certificates.html
+                dh_file = ${certdir}/dh.pem                            # <- Generic Diffie-Hellman key
                 ca_path = ${cadir}
                 cipher_list = "DEFAULT"
                 cipher_server_preference = no

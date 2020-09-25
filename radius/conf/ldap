@@ -1,8 +1,8 @@
 ldap {
         server = 'ldaps://ldap.google.com:636'
-        identity = <GSuiteCreds>                     # <-
-        password = <GSuiteCreds>                     # <-
-        base_dn = 'DC=acme,DC=com'                   # <-
+        identity = <GSuiteCreds>                     # <- GSuite LDAP credentials identity
+        password = <GSuiteCreds>                     # <- GSuite LDAP credentials password
+        base_dn = 'DC=acme,DC=com'                   # <- GSuite LDAP base DN
         sasl {
         }
         update {
@@ -13,13 +13,13 @@ ldap {
                 reply:Class := 'employeeType'
         }
         user {
-                base_dn = "ou=Users,dc=acme,dc=com"           # <-
+                base_dn = "ou=Users,dc=acme,dc=com"           # <- GSuite LDAP base DN for user lookup
                 filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
                 sasl {
                 }
         }
         group {
-                base_dn = "ou=Groups,dc=acme,dc=com"          # <-
+                base_dn = "ou=Groups,dc=acme,dc=com"          # <- GSuite LDAP base DN for group membership lookup
                 filter = '(objectClass=posixGroup)'
                 name_attribute = cn
                 membership_attribute = 'memberOf'
@@ -67,8 +67,8 @@ ldap {
         }
         tls {
                 start_tls = no
-                certificate_file = /run/secrets/Google_sLDAP.crt           # <-
-                private_key_file = /run/secrets/Google_sLDAP.key           # <-
+                certificate_file = /run/secrets/Google_sLDAP.crt           # <- GSuite certificate. https://docs.docker.com/engine/swarm/secrets/
+                private_key_file = /run/secrets/Google_sLDAP.key           # <- GSuite key.  https://docs.docker.com/engine/swarm/secrets/
                 random_file = /dev/urandom
                 require_cert = 'allow'
         }

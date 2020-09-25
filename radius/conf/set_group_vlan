@@ -5,23 +5,23 @@ set_group_vlan {
                         reply:Tunnel-Medium-Type := 'IEEE-802'
                 }
                 switch "%{Foreach-Variable-0}" {
-                        case 'technology' {                                           # <-
+                        case 'technology' {                                           # <- GSuite LDAP group name to match for VLAN assignment
                                 update {
-                                        reply:Tunnel-Private-Group-Id := '150'        # <-
+                                        reply:Tunnel-Private-Group-Id := '150'        # <- Change to match your VLAN ID for the matched group
                                         reply:Filter-Id := 'technology'
                                 }
                                 break
                         }
-                        case 'staff' {                                                # <-
+                        case 'staff' {                                                # <- GSuite LDAP group name to match for VLAN assignment
                                 update {
-                                        reply:Tunnel-Private-Group-Id := '70'         # <-
+                                        reply:Tunnel-Private-Group-Id := '70'         # <- Change to match your VLAN ID for the matched group
                                         reply:Filter-Id := 'staff'
                                 }
                                 break
                         }
                         case {
                                 update {
-                                        reply:Tunnel-Private-Group-Id := '80'         # <-
+                                        reply:Tunnel-Private-Group-Id := '80'         # <- Default VLAN ID if not match found.
                                         reply:Filter-Id := 'student'
                                 }
                         }

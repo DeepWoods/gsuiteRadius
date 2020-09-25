@@ -54,6 +54,7 @@ RUN apt-get update \
                     freeradius-mysql \
                     freeradius-ldap \
                     openssh-client \
+                    rsync \
                     net-tools \
                     php \
                     php-common \

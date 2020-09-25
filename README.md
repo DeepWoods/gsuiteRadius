@@ -71,7 +71,7 @@ version: '3.1'
 services:
   radius_server:
     container_name: ${COMPOSE_PROJECT_NAME}_radius
-    hostname: radius.acme.com
+    hostname: radius.${RADIUS_REALM}
     restart: always
     build:
       context: ./radius
@@ -84,9 +84,6 @@ services:
         - MYSQL_DATABASE=${MYSQL_DATABASE}
         - RADIUS_REALM=${RADIUS_REALM}
         - RADIUS_SECRET=${RADIUS_SECRET}
-        - RAD_USER=${RAD_USER}
-        - RAD_GROUP=${RAD_GROUP}
-        - RAD_LOG_DIR=${RAD_LOG_DIR}
         - CERT_HOST=${CERT_HOST}
     secrets:
         - id_rsa
@@ -111,7 +108,7 @@ services:
 
   mysql_db:
     container_name: ${COMPOSE_PROJECT_NAME}_mysql
-    hostname: mysql.acme.com
+    hostname: mariadb.${RADIUS_REALM}
     restart: always
     build:
       context: ./mariadb

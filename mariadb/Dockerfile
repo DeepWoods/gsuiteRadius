@@ -1,4 +1,4 @@
-FROM mariadb:10.3
+FROM mariadb:10.5
 LABEL maintainer="DeepWoods"
 
 ARG BUILD_RFC3339="1970-01-01T00:00:00Z"
@@ -18,7 +18,7 @@ LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.vendor="DeepWoods Creations"
 LABEL org.label-schema.build-date=$BUILD_RFC3339
 LABEL org.label-schema.name="deepwoods/gsuiteRadius"
-LABEL org.label-schema.description="Docker image built from MariaDB-Server 10.3 for FreeRadius/Daloradius."
+LABEL org.label-schema.description="Docker image built from MariaDB-Server 10.5 for FreeRadius/Daloradius."
 LABEL org.label-schema.url="https://hub.docker.com/r/deepwoods/gsuiteRadius"
 LABEL org.label-schema.vcs-ref=$VCS_REF
 LABEL org.label-schema.version=$VERSION
@@ -30,8 +30,8 @@ COPY sql/*.sql /docker-entrypoint-initdb.d/
 COPY certs/* /mysql-certs/
 
 RUN mkdir -p ${MYSQL_LOG_DIR} && \
-	usermod -u 1000 ${MYSQL_CONTAINER_USER} && \
- 	groupmod -g 1000 ${MYSQL_CONTAINER_GROUP} && \
+	usermod -u 2000 ${MYSQL_CONTAINER_USER} && \
+ 	groupmod -g 2000 ${MYSQL_CONTAINER_GROUP} && \
 	chown ${MYSQL_CONTAINER_USER}:${MYSQL_CONTAINER_USER} -R ${MYSQL_DATA_DIR} ${MYSQL_LOG_DIR} /docker-entrypoint-initdb.d && \
 	sed -i -e 's@MYSQL_DATABASE@'${MYSQL_DATABASE}'@g' /docker-entrypoint-initdb.d/db_setup.sql && \
 	sed -i -e 's@MYSQL_USER@'${MYSQL_USER}'@g' /docker-entrypoint-initdb.d/db_setup.sql && \
