@@ -116,8 +116,8 @@ services:
         - DB_IP=${DB_IP}
         - MYSQL_CONTAINER_USER=mysql
         - MYSQL_CONTAINER_GROUP=mysql
-        - MYSQL_DATA_DIR=${MYSQL_DATA_DIR}
-        - MYSQL_LOG_DIR=${MYSQL_LOG_DIR}
+        - MYSQL_DATA_DIR=/var/lib/mysql
+        - MYSQL_LOG_DIR=/var/log/mysql
         - MYSQL_DATABASE=${MYSQL_DATABASE}
         - MYSQL_USER=${MYSQL_USER}
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
