@@ -1,43 +1,57 @@
-# gsuiteRadius - GSuite Radius Auth in Docker
+# gsuiteRadius - RADIUS GSuite Auth in Docker
 
 ## About
-
-* Docker compose build for freeradius, daloradius, apache2, php, 802.1x auth(EAP-TTLS) via GSuite sLDAP, mac-auth based on latest Ubuntu LTS.
+* Docker compose build providing freeradius, daloradius, apache2, php, 802.1x auth(EAP-TTLS) via GSuite sLDAP, mac-auth based on latest Ubuntu LTS.
 * Includes separate MariaDB-Server 10.3 build with radius schema
 * access via `your-ip-or-url/daloradius`
 * User: `administrator` Password: `radius`
 
+## Installation
+1. [Install docker-compose](https://docs.docker.com/compose/install/#install-compose).
+
+2. Clone this repository: `git clone https://github.com/DeepWoods/gsuiteRadius.git .`
+
+3. Modify configuration:
+- Read over and edit variables in the .env file.
+- Replace all occurrences of acme.com with your GSuite domain.
+- Verify and edit ./radius/conf/ldap to reflect your GSuite LDAP credentials, certificate files, and base_dn settings.
+- The file ./radius/conf/set_group_vlan should be changed to assign VLAN ID's based on group membership lookup in GSuite.
+- NAS devices can be added in ./radius/conf/clients.conf or added via web interface(daloradius) to the SQL database.
+
+4. Build the images and run the services.
+
+	docker-compose up
+
+
 ## Variables
-
 * .env file for changing most configuration options
+* Server certificates and credentials in ./radius/conf/ files.
 
-
-#### RADIUS_REALM
+##### RADIUS_REALM
 default value: *acme.com*
-#### RADIUS_SECRET
+##### RADIUS_SECRET
 default value: *testing123*
-#### MYSQL_USER
+##### MYSQL_USER
 default value: *raduser*
-#### MYSQL_PASSWORD
+##### MYSQL_PASSWORD
 default value: *radPass*
-#### MYSQL_HOST
+##### MYSQL_HOST
 default value: *acme_mysql*
-#### MYSQL_PORT
+##### MYSQL_PORT
 default value: *3306*
-#### MYSQL_DATABASE
+##### MYSQL_DATABASE
 default value: *radius*
-#### MYSQL_ROOT_PASSWORD
+##### MYSQL_ROOT_PASSWORD
 default value: *t00rPaSs*
-#### TZ
+##### TZ
 default value: *America/Chicago* - [see List of tz time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 
-## Configuration
-
-* ./radius/conf directory contains configuration files with required edits. Pay particular attention editing the ldap file with your GSuite LDAP information.
-     Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
-
 ---
+## Configuration
+* ./radius/conf directory contains configuration files with required edits. Pay particular attention editing the ldap file with your GSuite LDAP information.
+Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
+
 ### Certificates
 Generic certificates provided for configuration reference but not guaranteed.  A new self-signed certificate authority and server certificates
 can be created by following the instructions in the /etc/freeradius/3.0/certs/ directory of the radius container.
@@ -50,7 +64,6 @@ here: https://support.google.com/a/topic/9048334?hl=en&ref_topic=7556686
 
 ---
 ## Docker-compose example
-
 
 ```yaml
 version: '3.1'
