@@ -2,7 +2,7 @@
 
 ## About
 * Docker compose build providing freeradius, daloradius, apache2, php, 802.1x auth(EAP-TTLS) via GSuite sLDAP, mac-auth based on latest Ubuntu LTS.
-* Includes separate MariaDB-Server 10.3 build with radius schema
+* Includes separate MariaDB-Server 10.5 build with radius schema
 * access via `your-ip-or-url/daloradius`
 * User: `administrator` Password: `radius`
 
