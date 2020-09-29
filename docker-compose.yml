@@ -58,8 +58,8 @@ services:
       rad_vlan:
         ipv4_address: ${DB_IP}
     volumes:
-      - ./mariadb/data:${MYSQL_DATA_DIR}
-      - ./mariadb/log/:${MYSQL_LOG_DIR}
+      - ./mariadb/data:/var/lib/mysql
+      - ./mariadb/log/:/var/log/mysql
     ports:
       - "3306:3306"
     environment:

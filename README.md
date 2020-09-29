@@ -51,6 +51,8 @@ default value: *America/Chicago* - [see List of tz time zones](https://en.wikipe
 ## Configuration
 * ./radius/conf directory contains configuration files with required edits. Pay particular attention editing the ldap file with your GSuite LDAP information.
 Running `grep -r '# <-' radius/conf/*` will display the files and settings to change.
+* Check file permissions of the mysql data and log volumes to avoid issues.  The UID & GID can be modified in mariadb/Dockerfile from the default `2000:2000` and
+the directory on the host should match in order for the container to read/write. [further information](https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca) 
 
 ### Certificates
 Generic certificates provided for configuration reference but not guaranteed.  A new self-signed certificate authority and server certificates
@@ -60,7 +62,15 @@ How to use Let's Encrypt public CA certificate for Freeradius can be found here:
 
 ### Google LDAP Client
 Client certificate and client access credentials are required to allow Freeradius to query your GSuite directory.  Information and instructions can be found 
-here: https://support.google.com/a/topic/9048334?hl=en&ref_topic=7556686
+here: https://support.google.com/a/topic/9048334?hl=en&ref_topic=7556686a
+
+### Useful Commands
+docker-compose (re)build and detach: *docker-compose up -d --build*
+Stop and remove containers: *docker-compose down*
+Restart a service: *docker-compose restart radius_server*
+View logs: *docker-compose logs*
+Bash shell on running container name: *docker exec -it acme_radius /bin/bash*
+Remove persistent data & images(clean slate): *rm -rf mariadb/data/\* mariadb/log/\* && docker image prune -a*
 
 ---
 ## Docker-compose example
@@ -126,8 +136,8 @@ services:
       rad_vlan:
         ipv4_address: ${DB_IP}
     volumes:
-      - ./mariadb/data:${MYSQL_DATA_DIR}
-      - ./mariadb/log/:${MYSQL_LOG_DIR}
+      - ./mariadb/data:/var/lib/mysql
+      - ./mariadb/log/:/var/log/mysql
     ports:
       - "3306:3306"
     environment:
