@@ -65,12 +65,17 @@ Client certificate and client access credentials are required to allow Freeradiu
 here: https://support.google.com/a/topic/9048334?hl=en&ref_topic=7556686a
 
 ### Useful Commands
-docker-compose (re)build and detach: *docker-compose up -d --build*
-Stop and remove containers: *docker-compose down*
-Restart a service: *docker-compose restart radius_server*
-View logs: *docker-compose logs*
-Bash shell on running container name: *docker exec -it acme_radius /bin/bash*
-Remove persistent data & images(clean slate): *rm -rf mariadb/data/\* mariadb/log/\* && docker image prune -a*
+docker-compose (re)build and detach: `docker-compose up -d --build`
+
+Stop and remove containers: `docker-compose down`
+
+Restart a service: `docker-compose restart radius_server`
+
+View logs: `docker-compose logs`
+
+Bash shell on running container name: `docker exec -it acme_radius /bin/bash`
+
+Remove persistent data & images(clean slate): `rm -rf mariadb/data/* mariadb/log/* && docker image prune -a`
 
 ---
 ## Docker-compose example
