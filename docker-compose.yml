@@ -17,10 +17,11 @@ services:
         - RADIUS_REALM=${RADIUS_REALM}
         - RADIUS_SECRET=${RADIUS_SECRET}
         - CERT_HOST=${CERT_HOST}
+        - TZ=${TZ}
     secrets:
-        - id_rsa
-        - Google_sLDAP.crt
-        - Google_sLDAP.key
+      - id_rsa
+      - Google_sLDAP.crt
+      - Google_sLDAP.key
     networks:
       rad_vlan:
         ipv4_address: ${RADIUS_IP}
@@ -54,6 +55,7 @@ services:
         - MYSQL_USER=${MYSQL_USER}
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         - RADIUS_IP=${RADIUS_IP}
+        - TZ=${TZ}
     networks:
       rad_vlan:
         ipv4_address: ${DB_IP}

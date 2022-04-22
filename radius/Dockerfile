@@ -16,6 +16,7 @@ ARG RADIUS_SECRET
 ARG RADIUS_REALM
 ARG DB_IP
 ARG CERT_HOST
+ARG TZ
 
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.vendor="DeepWoods Creations"
@@ -38,58 +39,58 @@ ENV RADIUS_REALM=${RADIUS_REALM:-acme.com}
 ENV DB_IP=${DB_IP:-192.168.5.6}
 ENV CERT_HOST=${CERT_HOST:-certs.acme.com}
 
-ENV TZ America/Chicago
+ENV TZ=${TZ:-America/Chicago}
 
 RUN apt-get update \
- && apt-get install --yes --no-install-recommends \
-                    apt-utils \
-                    tzdata \
-                    apache2 \
-                    libapache2-mod-php \
-                    cron \
-                    freeradius-config \
-                    freeradius-utils \
-                    freeradius \
-                    freeradius-common \
-                    freeradius-mysql \
-                    freeradius-ldap \
-                    openssh-client \
-                    rsync \
-                    net-tools \
-                    php \
-                    php-common \
-                    php-gd \
-                    php-curl \
-                    php-mail \
-                    php-mail-mime \
-                    php-db \
-                    php-mysql \
-                    mariadb-client \
-                    libmysqlclient-dev \
-                    supervisor \
-                    unzip \
-                    wget \
- && rm -rf /var/lib/apt/lists/*
- 
+    && apt-get install --yes --no-install-recommends \
+    apt-utils \
+    tzdata \
+    apache2 \
+    libapache2-mod-php \
+    cron \
+    freeradius-config \
+    freeradius-utils \
+    freeradius \
+    freeradius-common \
+    freeradius-mysql \
+    freeradius-ldap \
+    openssh-client \
+    rsync \
+    net-tools \
+    php \
+    php-common \
+    php-gd \
+    php-curl \
+    php-mail \
+    php-mail-mime \
+    php-db \
+    php-mysql \
+    mariadb-client \
+    libmysqlclient-dev \
+    supervisor \
+    unzip \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
- && update-ca-certificates -f \
- && mkdir -p /tmp/pear/cache \
- && wget http://pear.php.net/go-pear.phar \
- && php go-pear.phar \
- && rm go-pear.phar \
- && pear channel-update pear.php.net \
- && pear install -a -f DB \
- && pear install -a -f Mail \
- && pear install -a -f Mail_Mime
+    && update-ca-certificates -f \
+    && mkdir -p /tmp/pear/cache \
+    && wget http://pear.php.net/go-pear.phar \
+    && php go-pear.phar \
+    && rm go-pear.phar \
+    && pear channel-update pear.php.net \
+    && pear install -a -f DB \
+    && pear install -a -f Mail \
+    && pear install -a -f Mail_Mime
 
 ENV DALO_VERSION 1.1-2
 
 RUN wget https://github.com/lirantal/daloradius/archive/"$DALO_VERSION".zip \
- && unzip "$DALO_VERSION".zip \
- && rm "$DALO_VERSION".zip \
- && mv daloradius-"$DALO_VERSION" /var/www/html/daloradius \
- && chown -R www-data:www-data /var/www/html/daloradius \
- && chmod 644 /var/www/html/daloradius/library/daloradius.conf.php
+    && unzip "$DALO_VERSION".zip \
+    && rm "$DALO_VERSION".zip \
+    && mv daloradius-"$DALO_VERSION" /var/www/html/daloradius \
+    && chown -R www-data:www-data /var/www/html/daloradius \
+    && chmod 644 /var/www/html/daloradius/library/daloradius.conf.php
 
 EXPOSE 1812 1813 80
 
