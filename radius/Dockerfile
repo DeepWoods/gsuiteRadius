@@ -64,6 +64,7 @@ RUN apt-get update \
                     php-mail-mime \
                     php-db \
                     php-mysql \
+                    php-dev \
                     mariadb-client \
                     libmysqlclient-dev \
                     supervisor \
