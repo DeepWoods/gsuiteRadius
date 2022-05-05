@@ -12,6 +12,10 @@ ldap {
                 reply:                          += 'radiusReplyAttribute'
                 reply:Class := 'employeeType'
         }
+        #  If you change this, you will also need to update the
+	#  "cache_ldap_user_dn" module in mods-available/cache_auth.
+	#
+	user_dn = "LDAP-UserDn"
         user {
                 base_dn = "ou=Users,dc=acme,dc=com"           # <- GSuite LDAP base DN for user lookup
                 filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
@@ -24,6 +28,10 @@ ldap {
                 name_attribute = cn
                 membership_attribute = 'memberOf'
                 membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
+                #  If the "memberOf" attribute is used for retrieving group membership,
+		#  then you should also use "cacheable_dn", in orser to cache the group details.
+		#  "memberOf" is a list of fully quallified group DNs which the user belongs to,
+		#  so using the DN for the cache avoids further lookups to retrieve group names.
                 cacheable_name = 'yes'
                 cacheable_dn = 'no'
         }

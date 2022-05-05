@@ -29,8 +29,10 @@ eap {
                 tls_max_version = "1.2"
                 ecdh_curve = "prime256v1"
                 cache {
-                        enable = no
+                        enable = yes
                         lifetime = 24 # hours
+                        name = "EAP module"
+                        persist_dir = "${logdir}/tlscache"
                         store {
                                Tunnel-Private-Group-Id
                         }
