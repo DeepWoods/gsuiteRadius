@@ -54,6 +54,7 @@ ln -s /etc/freeradius/3.0/sites-available/status /etc/freeradius/3.0/sites-enabl
 # Enable modules for LDAP auth
 ln -s /etc/freeradius/3.0/mods-available/cache /etc/freeradius/3.0/mods-enabled/cache
 ln -s /etc/freeradius/3.0/mods-available/ldap /etc/freeradius/3.0/mods-enabled/ldap
+ln -s /etc/freeradius/3.0/mods-available/cache_auth /etc/freeradius/3.0/mods-enabled/cache_auth
 
 # add realm
 cat <<EOF >> /etc/freeradius/3.0/proxy.conf

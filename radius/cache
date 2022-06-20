@@ -1,0 +1,10 @@
+cache {
+        key = "%{User-Name}"
+        ttl = 3600
+        add_stats = no
+        update {
+                &reply:Reply-Message += &reply:Reply-Message[*]
+                &reply:Reply-Message += "Cache last updated at %t"
+                &reply:Class := "%{randstr:ssssssssssssssssssssssssssssssss}"
+        }
+}

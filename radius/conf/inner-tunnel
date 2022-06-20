@@ -7,10 +7,65 @@ listen {
 authorize {
         filter_username
         suffix
+
+        #  Check the authentication cache to see if this user
+	#  recently sucessfully authenticated
         update control {
                 Cache-Status-Only = 'yes'
         }
+        cache_auth_accept
         cache
+
+        #  If there's a cached User-Name / User-Password which matches
+	#  what the user sent here, then the user has been
+	#  authenticated.  We can then avoid interacting with Google's
+	#  LDAP server, which significantly improves the performance
+	#  of user authentication.
+	#
+	if (ok) {
+		update {
+			&control:Auth-Type := Accept
+		}
+		cache_auth_accept
+		return
+	}
+
+	#
+	#  Check the reject cache to see if this user was
+	#  recently rejected
+	#
+	update control {
+		&Cache-Status-Only := 'yes'
+	}
+	cache_auth_reject
+
+	#
+	#  If there's a cached User-Name / User-Password which matches
+	#  what the user sent here, then the user has been rejected.
+	#  As with authentication above, we don't need to check
+	#  Google's LDAP server, and can improve performance.
+	#
+	#  Note that in may cases rejected users will try over and
+	#  over again.  This increased load can significantly affect
+	#  performance, and can even prevent other users from
+	#  authenticating!  The solution is to just tell the bad users
+	#  to "go away" as quickly as possible, while using minimal
+	#  resources.
+	#
+	if (ok) {
+		update {
+			&Module-Failure-Message := "Rejected by cache entry"
+		}
+		reject
+	}
+
+	#
+	#  If group membership checks are required, then ensure that
+	#  the relevant "cacheable_" option is set against the ldap
+	#  instance, and call the ldap module here.
+	#
+	#  If group membership is irrelevant, do not call ldap here
+	#  to improve performance
         eap {
                 ok = return
         }
@@ -69,12 +124,45 @@ post-auth {
                         &outer.session-state: += &reply:
                 }
         }
+        #  Cache the user's DN.  See the authorize section for
+	#  how and why this would be used
+	#
+	cache_ldap_user_dn
+
+	#
+	#  If a user was authenticated by ldap, add the users name /
+	#  password to the cache of successful authentications.
+	#
+	#  Otherwise the user was authenticated via the
+	#  cache_auth_accept call above, in the "authorize" section.
+	#
+	if (&control:Auth-Type == ldap) {
+		cache_auth_accept
+	}
+
         Post-Auth-Type REJECT {
                 sql
                 attr_filter.access_reject
                 update outer.session-state {
                         &Module-Failure-Message := &request:Module-Failure-Message
                 }
+                #  Record rejects in a cache, as a protection against
+		#  repeated attempts from mis-configured clients.
+		#
+		if (&control:Auth-Type == ldap) {
+			cache_auth_reject
+		}
+
+		#
+		#  Clear the DN cache entry if it exists.
+		#  If the DN cache is in use, retaining an incorrect
+		#  DN entry could cause issues if the user's DN
+		#  has changed.
+		#
+		update control {
+			&Cache-TTL := 0
+		}
+		cache_ldap_user_dn
         }
 }
 pre-proxy {

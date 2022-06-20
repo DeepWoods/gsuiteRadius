@@ -17,6 +17,7 @@ ARG RADIUS_REALM
 ARG DB_IP
 ARG CERT_HOST
 ARG TZ
+ARG TLS_CACHE_DIR
 
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.vendor="DeepWoods Creations"
@@ -40,6 +41,7 @@ ENV DB_IP=${DB_IP:-192.168.5.6}
 ENV CERT_HOST=${CERT_HOST:-certs.acme.com}
 
 ENV TZ=${TZ:-America/Chicago}
+ENV TLS_CACHE_DIR=${TLS_CACHE_DIR:-/var/log/freeradius/tlscache}
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
@@ -105,8 +107,12 @@ COPY ./conf/cache /etc/freeradius/3.0/mods-available/cache
 #COPY ./conf/ldap /etc/freeradius/3.0/mods-available/ldap
 #COPY ./conf/set_group_vlan /etc/freeradius/3.0/policy.d/set_group_vlan
 COPY ./certs/ /etc/freeradius/3.0/certs/
+COPY ./conf/cache_auth /etc/freeradius/3.0/mods-available/cache_auth
 
 COPY init.sh /rad/
 COPY supervisor.conf /etc/
+
+# Create the persist_dir for the cache
+RUN mkdir "$TLS_CACHE_DIR" && chown freerad:freerad "$TLS_CACHE_DIR" && chmod 700 "$TLS_CACHE_DIR"
 
 CMD ["sh", "/rad/init.sh"]

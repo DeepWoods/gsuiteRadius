@@ -18,6 +18,7 @@ services:
         - RADIUS_SECRET=${RADIUS_SECRET}
         - CERT_HOST=${CERT_HOST}
         - TZ=${TZ}
+        - TLS_CACHE_DIR=${TLS_CACHE_DIR}
     secrets:
       - id_rsa
       - Google_sLDAP.crt
