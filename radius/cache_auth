@@ -111,6 +111,8 @@ cache cache_ldap_user_dn {
 	key = "%{Stripped-User-Name}"
 	ttl = 86400
 	update {
-		&control:LDAP-UserDN = &control:LDAP-UserDN
+		# &control:LDAP-UserDN = &control:LDAP-UserDN
+		&control:LDAP-Group = &control:LDAP-Group
+        &control:Filter-Id = &control:Filter-Id
 	}
 }
