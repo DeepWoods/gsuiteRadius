@@ -14,7 +14,7 @@ authorize {
                 Cache-Status-Only = 'yes'
         }
         cache_auth_accept
-        cache
+        # cache
 
         #  If there's a cached User-Name / User-Password which matches
 	#  what the user sent here, then the user has been
@@ -27,6 +27,7 @@ authorize {
 			&control:Auth-Type := Accept
 		}
 		cache_auth_accept
+		cache_ldap_user_dn
 		return
 	}
 
@@ -80,7 +81,8 @@ authorize {
         update control {
                 Cache-Status-Only := 'no'
         }
-        cache
+        cache_ldap_user_dn
+		# cache
         expiration
         logintime
         pap
